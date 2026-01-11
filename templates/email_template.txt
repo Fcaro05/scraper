@@ -1,0 +1,17 @@
+Buongiorno,
+sono Francesco di Salus AI.
+
+Scrivo perché ho notato che molte persone oggi cercano {{ keyword }} a {{ location }} direttamente online… ma spesso non trovano subito un posto chiaro dove capire chi siete e chiamarvi al volo.
+
+Per questo ho preparato una versione semplice di sito già pronta per {{ Website }}, costruita con un obiettivo concreto: farvi ricevere più chiamate.
+
+È già fatto e pronto da guardare.
+
+Se ti fa comodo, facciamo una call di 10 minuti: te lo mostro, lo guardiamo insieme e capisci al volo se può esservi utile.
+Zero costi, zero impegno.
+
+Se vuoi, possiamo sentirci {{ slot1|default('mercoledì alle 15:00') }} oppure {{ slot2|default('giovedì alle 10:30') }}.
+
+Grazie per il tempo,
+Francesco
+

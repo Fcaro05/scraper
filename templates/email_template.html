@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Personalizzata</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #1f1f1f; max-width: 640px; margin: 0 auto; padding: 24px;">
+    <div style="background-color: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.06);">
+        <p style="margin: 0 0 16px 0; color: #111827;">Buongiorno,</p>
+        <p style="margin: 0 0 8px 0; color: #111827;">sono Francesco di <strong>Salus AI</strong>.</p>
+
+        <p style="margin: 16px 0;">
+            Ho notato che molte persone oggi cercano <strong>{{ keyword }}</strong> a <strong>{{ location }}</strong> direttamente online… ma spesso non trovano subito un posto chiaro dove capire chi siete e chiamarvi al volo.
+        </p>
+
+        <p style="margin: 16px 0;">
+            Per questo ho preparato una versione semplice di sito già pronta per <strong>{{ keyword }}</strong>, costruita con un obiettivo concreto: farvi ricevere più chiamate.
+        </p>
+
+        <p style="margin: 16px 0;">
+            È già pronta da guardare.
+        </p>
+
+        <p style="margin: 16px 0;">
+            Se ti fa comodo, facciamo una call di 10 minuti: te lo mostro, lo guardiamo insieme e capisci al volo se può esservi utile. Zero costi, zero impegno.
+        </p>
+
+        <p style="margin: 16px 0;">
+            Se vuoi, possiamo sentirci <strong>{{ slot1|default('mercoledì alle 15:00') }}</strong> oppure <strong>{{ slot2|default('giovedì alle 10:30') }}</strong>.
+        </p>
+
+        <p style="margin: 24px 0 0 0;">
+            Grazie per il tempo,<br>
+            Francesco
+        </p>
+    </div>
+</body>
+</html>
+
