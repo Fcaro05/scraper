@@ -126,7 +126,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--skip-sent",
         action="store_true",
-        help="Salta righe con colonna 'Inviata' = 'Sì' o 'Si'.",
+        help="Filtra solo righe con colonna 'Inviata' = 'no' e marca come 'sì' dopo invio.",
     )
     parser.add_argument(
         "--mark-sent-column",
@@ -204,10 +204,14 @@ def load_recipients(
         if len(row) < 6:  # Almeno 6 colonne attese
             continue
 
-        # Salta se già inviata
+        # Salta se già inviata (cerca "sì"/"si"/"yes") o se non ha "no" quando skip_sent è attivo
         if skip_sent and sent_col_idx is not None and sent_col_idx < len(row):
             sent_value = row[sent_col_idx].strip().lower()
+            # Salta se già inviata
             if sent_value in ["sì", "si", "yes", "y", "1", "true"]:
+                continue
+            # Se skip_sent è attivo, processa SOLO righe con "no"
+            if sent_value != "no":
                 continue
 
         email = row[0].strip() if len(row) > 0 else ""
@@ -316,18 +320,18 @@ def send_email(
 
 
 def mark_as_sent(ws, row_number: int, sent_column: str = "Inviata"):
-    """Marca una riga come inviata nel Google Sheet."""
+    """Marca una riga come inviata nel Google Sheet (cambia 'no' -> 'sì')."""
     try:
         headers = ws.row_values(1)
         if sent_column not in headers:
             # Aggiungi la colonna se non esiste
             col_letter = chr(ord("A") + len(headers))
-            ws.update(f"{col_letter}1", [[sent_column]])
+            ws.update(values=[[sent_column]], range_name=f"{col_letter}1")
             headers.append(sent_column)
 
         col_idx = headers.index(sent_column)
         col_letter = chr(ord("A") + col_idx)
-        ws.update(f"{col_letter}{row_number}", [["Sì"]])
+        ws.update(values=[["sì"]], range_name=f"{col_letter}{row_number}")
     except Exception as e:
         print(f"Avviso: impossibile marcare riga {row_number} come inviata: {e}")
 

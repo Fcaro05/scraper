@@ -66,6 +66,7 @@ class BusinessRecord:
             self.keyword_combo(),
             "",  # Nome proprietario (non disponibile da Maps)
             self.city,
+            "no",  # Inviata - default no per nuovi business
         ]
 
 
@@ -132,11 +133,11 @@ def get_worksheet(client: gspread.Client, sheet_id: str, worksheet_name: str):
     try:
         ws = sh.worksheet(worksheet_name)
     except gspread.WorksheetNotFound:
-        ws = sh.add_worksheet(title=worksheet_name, rows=1000, cols=6)
-    headers = ["Email", "Phone", "Website", "Keyword", "Nome proprietario", "Location"]
+        ws = sh.add_worksheet(title=worksheet_name, rows=1000, cols=7)
+    headers = ["Email", "Phone", "Website", "Keyword", "Nome proprietario", "Location", "Inviata"]
     existing = ws.row_values(1)
     if existing != headers:
-        ws.update("A1:F1", [headers])
+        ws.update("A1:G1", [headers])
     return ws
 
 
@@ -418,16 +419,13 @@ def assess_site_quality(html: str, url: str) -> Tuple[bool, str]:
         has_robots_meta,
     ])
     
-    # Se ha molte caratteristiche positive, richiedi più problemi per considerarlo migliorabile
-    if positive_indicators >= 3:
-        # Sito probabilmente ben fatto: richiedi almeno 5 problemi
-        migliorabile = len(reasons) >= 5
-    elif positive_indicators >= 2:
-        # Sito con qualche cura: richiedi almeno 4 problemi
-        migliorabile = len(reasons) >= 4
+    # FILTRO RIGIDO: accetta SOLO siti che fanno veramente cagare
+    if positive_indicators >= 2:
+        # Sito con caratteristiche moderne: SCARTA (troppo ben fatto)
+        migliorabile = False
     else:
-        # Sito normale: richiedi almeno 3 problemi
-        migliorabile = len(reasons) >= 3
+        # Sito senza caratteristiche moderne: richiedi ALMENO 5 problemi gravi
+        migliorabile = len(reasons) >= 5
     
     note = "; ".join(reasons[:4])
     return migliorabile, note
@@ -585,6 +583,11 @@ def filter_with_email(records: Sequence[BusinessRecord]) -> List[BusinessRecord]
     return [r for r in records if (r.email or "").strip()]
 
 
+def filter_only_bad_sites(records: Sequence[BusinessRecord]) -> List[BusinessRecord]:
+    """Filtra SOLO i business con siti che fanno veramente cagare (migliorabile=True)."""
+    return [r for r in records if r.migliorabile]
+
+
 async def run() -> None:
     args = parse_args()
     queries = load_queries(args.queries_file, args.max_per_query)
@@ -612,8 +615,12 @@ async def run() -> None:
                 all_records.extend(recs)
                 await page.wait_for_timeout(random.uniform(8000, 12000))
             if all_records:
-                filtered = filter_with_email(all_records)
-                unique_records = dedup_records(filtered, existing_websites)
+                # Filtro 1: solo quelli con email
+                with_email = filter_with_email(all_records)
+                # Filtro 2: solo quelli con siti che fanno veramente cagare
+                bad_sites = filter_only_bad_sites(with_email)
+                # Dedup
+                unique_records = dedup_records(bad_sites, existing_websites)
                 write_rows(ws, unique_records)
         await browser.close()
 

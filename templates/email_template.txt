@@ -1,17 +1,26 @@
 Buongiorno,
 sono Francesco di Salus AI.
 
-Scrivo perché ho notato che molte persone oggi cercano {{ keyword }} a {{ location }} direttamente online… ma spesso non trovano subito un posto chiaro dove capire chi siete e chiamarvi al volo.
+Ho dato un'occhiata a {{ website }} e ho pensato che potreste beneficiare di un restyling: qualcosa di più pulito, diretto e che converta meglio chi vi trova.
 
-Per questo ho preparato una versione semplice di sito già pronta per {{ Website }}, costruita con un obiettivo concreto: farvi ricevere più chiamate.
+Ho già preparato una bozza del vostro nuovo sito.
+
+L'obiettivo? Che chi arriva sulla pagina capisca subito cosa fate, si fidi di voi e vi chiami senza pensarci due volte.
 
 È già fatto e pronto da guardare.
 
-Se ti fa comodo, facciamo una call di 10 minuti: te lo mostro, lo guardiamo insieme e capisci al volo se può esservi utile.
-Zero costi, zero impegno.
+Te lo mostro in 10 minuti in call, così vedi subito se fa al caso vostro. Zero impegno.
 
-Se vuoi, possiamo sentirci {{ slot1|default('mercoledì alle 15:00') }} oppure {{ slot2|default('giovedì alle 10:30') }}.
+Hai 10 minuti {{ slot1|default('martedì alle 15:00') }} o {{ slot2|default('venerdì alle 10:30') }}?
 
-Grazie per il tempo,
+Grazie,
 Francesco
 
+---
+Caro Francesco
+Chief Commercial Officer (CCO)
+
+Cell: +39 351 857 9978
+E-mail: web48hagency@gmail.com
+Web48H website: https://web-agency-coral-theta.vercel.app/
+Salus AI website: Salus AI.com
